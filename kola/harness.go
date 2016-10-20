@@ -51,6 +51,7 @@ import (
 	_ "github.com/coreos/mantle/kola/tests/misc"
 	_ "github.com/coreos/mantle/kola/tests/rkt"
 	_ "github.com/coreos/mantle/kola/tests/systemd"
+	_ "github.com/coreos/mantle/kola/tests/tectonic"
 )
 
 var (
