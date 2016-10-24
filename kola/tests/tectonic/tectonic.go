@@ -9,14 +9,14 @@ import (
 // platforms supported by tectonic
 var supportedPlatforms = []string{"gce"}
 
-var plog = capnslog.NewPackageLogger("github.com/coreos/mantle", "kola/tests/etcd")
+var plog = capnslog.NewPackageLogger("github.com/coreos/mantle", "kola/tests/tectonic")
 
 func init() {
 	registerBootkube()
 }
 
 func registerBootkube() {
-	masterInit := renderBootkubeInit(true, nil)
+	masterInit := renderBootkubeInit("")
 
 	register.Register(&register.Test{
 		Name:      "coreos.tectonic.bootkube-simple",
