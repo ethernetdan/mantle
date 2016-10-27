@@ -58,9 +58,6 @@ func BootkubeSimple(c cluster.TestCluster) error {
 		return fmt.Errorf("failed to create bootkube assets: %v", err)
 	}
 
-	// ensure
-	config.SelfHostKubelet = true
-
 	plog.Info("Generating assets from config")
 	assets, err := bootkube.NewDefaultAssets(config)
 	if err != nil {
@@ -85,11 +82,6 @@ func BootkubeSimple(c cluster.TestCluster) error {
 	plog.Info("Starting master bootkube")
 	if err = startBootkube(master, bootkubeAssetDir, config.EtcdServers[0].String(), ""); err != nil {
 		return fmt.Errorf("failed to start master bootkube (%s): %v", master.IP(), err)
-	}
-
-	plog.Info("Starting master kubelet")
-	if _, err = master.SSH("sudo systemctl start kubelet"); err != nil {
-		return fmt.Errorf("failed to start master kubelet: %v", err)
 	}
 
 	var workers []platform.Machine
@@ -117,10 +109,6 @@ func BootkubeSimple(c cluster.TestCluster) error {
 			return fmt.Errorf("failed to start bootkube worker %s (%s): %v", w.ID(), w.IP(), err)
 		}
 
-		plog.Infof("Starting kubelet on %s", w.ID())
-		if _, err = master.SSH("sudo systemctl start kubelet"); err != nil {
-			return fmt.Errorf("failed to start %s kubelet: %v", w.ID(), err)
-		}
 	}
 
 	closeChan := make(chan os.Signal, 1)
